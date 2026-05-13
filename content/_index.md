@@ -1,9 +1,9 @@
 ---
-title: My Site
+# title: Eric Masi
 toc: false
 ---
 
-This is the landing page.
+![](go_ts_blog_header_002.png)
 
 ## Explore
 
@@ -12,6 +12,4 @@ This is the landing page.
   {{< card link="about" title="About" icon="user" >}}
 {{< /cards >}}
 
-## Documentation
-
-For more information, visit [Hextra](https://imfing.github.io/hextra).
+## Go & TypeScript consulting
