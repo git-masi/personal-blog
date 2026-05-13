@@ -25,7 +25,7 @@ menu:
       pageRef: /about
       weight: 2
     - name: Contact ↗
-      url: "https://github.com/imfing"
+      url: "https://docs.google.com/forms/d/e/1FAIpQLSdbITJdzcO0cmDse1FOOa2iUg6ANwbbB22fsWhrbcLhBN1iSg/viewform?usp=dialog"
       weight: 3
     - name: Search
       weight: 4
