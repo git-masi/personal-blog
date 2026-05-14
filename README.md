@@ -24,7 +24,6 @@ See [Update modules](https://gohugo.io/hugo-modules/use-modules/#update-modules)
 ### Start dev server
 
 ```sh
-# Start the dev server
 task dev
 ```
 
