@@ -1,6 +1,6 @@
 # Eric Masi - Personal Blog
 
-This repo contains the source files for the personal blo/website of Eric Masi. It is built using the [Hextra](https://github.com/imfing/hextra) template for [Hugo](https://gohugo.io/).
+This repo contains the source files for the personal blog/website of Eric Masi. It is built using the [Hextra](https://github.com/imfing/hextra) template for [Hugo](https://gohugo.io/).
 
 ## Local Development
 
