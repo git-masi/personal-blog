@@ -5,4 +5,4 @@ version: "3"
 tasks:
   dev:
     cmds:
-      - hugo server --logLevel debug --disableFastRender -p 8080
+      - hugo server --logLevel debug --disableFastRender -p 1313

@@ -27,3 +27,17 @@ See [Update modules](https://gohugo.io/hugo-modules/use-modules/#update-modules)
 # Start the dev server
 task dev
 ```
+
+## Custom CSS
+
+Custom styles can be added to `./assets/css/custom.css`.
+
+### Syntax highlighting
+
+This repo uses Chroma for syntax highlighting. You can generate custom themes using the following:
+
+```sh
+hugo gen chromastyles --style=github > assets/css/github.css
+```
+
+From there you can place relevant styles in `./assets/css/custom.css`. It is probably a good idea to create both dark and light styles.
