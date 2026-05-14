@@ -21,21 +21,26 @@ menu:
     - name: Blog
       pageRef: /blog
       weight: 1
+
     - name: About
       pageRef: /about
       weight: 2
+
     - name: Contact ↗
       url: "https://docs.google.com/forms/d/e/1FAIpQLSdbITJdzcO0cmDse1FOOa2iUg6ANwbbB22fsWhrbcLhBN1iSg/viewform?usp=dialog"
       weight: 3
+
     - name: Search
       weight: 4
       params:
         type: search
+
     - name: GitHub
       weight: 5
       url: "https://github.com/git-masi"
       params:
         icon: github
+
     - name: LinkedIn
       weight: 6
       url: "https://www.linkedin.com/in/emasi/"
@@ -48,9 +53,10 @@ params:
     displayLogo: false
 
   footer:
+    # Use a custom copyright component
     displayCopyright: false
-    displayPoweredBy: true
+    displayPoweredBy: false
 
   editURL:
-    enable: true
+    enable: false
     base: "https://github.com/imfing/hextra-starter-template/edit/main/content"
