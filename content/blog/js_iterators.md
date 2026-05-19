@@ -76,13 +76,17 @@ This can be a little confusing but bear with me.
 
 There are 2 "iteration protocols." They are: "iterable" and "iterator." You can read more about them [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols).
 
-In almost every case imaginable an object should implement ***both*** protocols. But to *grossly oversimplify*, the difference is that "iterable" defines what happens when you use `for...of` and "iterator" is a standardized way of producing a sequence of values.
+> [!warning] Edit
+> Previously the next paragraph erroneously stated: "In almost every case imaginable an object should implement ***both*** protocols."
+> I have added a new section at the end to show why that is not necessarily the case.
 
-Again, in practice you want both. And we will see both in action here.
+To *grossly oversimplify*, the difference is that "iterable" defines what happens when you use `for...of` and "iterator" is a standardized way of producing a sequence of values.
+
+We will see both in action throughout the article.
 
 ## Our first iterator
 
-Let's create our first "iterable iterator", which from now on we will just call an "iterator."
+Let's create our first iterator.
 
 ```ts
 const iter = {
@@ -106,7 +110,7 @@ If you run this code nothing happens. There is no error and nothing is logged.
 
 We can see from the comments that `[Symbol.iterator]()` is a special method that implements the "iterable" protocol. This method must return an object that implements the "iterator" protocol.
 
-By implementing a `next` method which returns an `IteratorResult` the object itself also conforms to the "iterator" protocol. That is why we can return `this` inside of `[Symbol.iterator]()`. Because the object itself is both an iterable and an iterator, hence iterable iterator.
+By implementing a `next` method which returns an `IteratorResult` the object itself also conforms to the "iterator" protocol. That is why we can return `this` inside of `[Symbol.iterator]()`. Because the object itself is both an iterable and an iterator, an iterable iterator.
 
 To really, really drive this point home – that there are two different protocols – we can decompose the example into two objects without issue.
 
@@ -475,7 +479,7 @@ class TreeNode {
   }
 
   // The `TreeNode` is iterable because of `[Symbol.iterator]()`
-  // It is also an iterator because the generator function implements `next`
+  // Because it is a generator function, each call to `[Symbol.iterator]()` produces a new iterator
   *[Symbol.iterator](): IterableIterator<number> {
     // 1. Traverse the left subtree
     if (this.left) {
@@ -596,3 +600,123 @@ flowchart TD
 Now you should have a good understanding of iterators and generators. If you want to learn even more, consider taking the plunge into the world of async iterators. But we'll end it here for now.
 
 Thanks for reading!
+
+---
+
+## Iterable iterator clarification
+
+This section was added based on feedback I received on [Reddit](https://www.reddit.com/r/learnjavascript/comments/1thnal3/i_wrote_an_article_about_javascript_iterators/). I want to expand on the idea of "iterable iterators". That is to say: objects that implement both iteration protocols.
+
+Let's revisit an earlier example.
+
+```ts
+const iter = {
+  [Symbol.iterator]() {
+    return this;
+  },
+
+  value: 0,
+
+  next(): IteratorResult<number, null> {
+    this.value++;
+    if (this.value > 10) {
+      return { value: null, done: true };
+    }
+    return { value: this.value, done: false };
+  },
+};
+```
+
+If we use this in a `for...of` loop we get the expected result.
+
+```ts
+for (const el of iter) {
+  console.log(el); // 1, 2, 3, 4 ...
+}
+```
+
+But what happens if we iterate twice?
+
+```ts
+for (const el of iter) {
+  console.log(el); // 1, 2, 3, 4 ...
+}
+
+for (const el of iter) {
+  console.log(el); //
+}
+```
+
+The second time no values are logged to the console.
+
+What's going on?
+
+Often iterators are written in such a way that when they are consumed they produce no more values. In the case of the custom iterator above once we reach 10 we always return `{ value: null, done: true }`. If we try to iterate over the object again we get nothing because we are "done."
+
+We can see the same behavior with generator functions.
+
+```ts
+function* gen() {
+    yield 1
+    yield 2
+    yield 3
+}
+
+const iter = gen();
+
+for (const el of iter) {
+    console.log(el); // 1, 2, 3
+}
+
+for (const el of iter) {
+    console.log(el); //
+}
+```
+
+You could modify the custom iterator to produce new values after it has been consumed.
+
+```ts
+const iter = {
+  [Symbol.iterator]() {
+    return this;
+  },
+
+  value: 0,
+
+  next(): IteratorResult<number, null> {
+    this.value++;
+    if (this.value > 10) {
+	  this.value = 0; // Reset the value to allow this iterator to be reused.
+    
+      return { value: null, done: true };
+    }
+    return { value: this.value, done: false };
+  },
+};
+```
+
+So depending on your use case you might want one-and-done behavior or you might want to be able to iterate many times.
+
+Iterating multiple times can be achieved using the `*[Symbol.iterator]()` pattern. Here's our simple example from earlier for context.
+
+```ts
+class Node {
+  *[Symbol.iterator]() {
+    yield 1;
+  }
+}
+
+const n = new Node();
+
+for (const el of n) {
+  console.log(el); // 1
+}
+
+for (const el of n) {
+  console.log(el); // 1
+}
+```
+
+This highlights the need to think carefully about iterator behavior. It is a powerful tool but if you're not careful you can introduce unexpected behavior.
+
+Thanks again for reading!
