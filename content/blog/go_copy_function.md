@@ -4,8 +4,6 @@ type: blog
 prev: blog/
 ---
 
-## Introduction
-
 I came across a use of the `copy` function that made my eyes glaze over. Initially I had no idea what I was looking at. Here's the relevant section of code. The goal is to add numbers to a sorted set.
 
 ```go

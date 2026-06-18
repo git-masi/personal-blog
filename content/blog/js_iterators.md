@@ -4,8 +4,6 @@ type: blog
 prev: blog/
 ---
 
-## Introduction
-
 Iterators offer an alternative to the classic `for` loop in JavaScript/TypeScript.
 
 You have probably used them without even knowing it.
